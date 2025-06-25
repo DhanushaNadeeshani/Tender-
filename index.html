@@ -629,7 +629,30 @@
             </div>
           </div>
 
-          <div style="text-align: center; margin-top: 20px">
+          
+<div class="form-row">
+  <div class="form-group">
+    <label for="poleType">Pole Type</label>
+    <input type="text" id="poleType" required />
+  </div>
+  <div class="form-group">
+    <label for="deliveryLocation">Location to be Delivered</label>
+    <input type="text" id="deliveryLocation" required />
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-group">
+    <label for="extendedDate">Extended Submission Date</label>
+    <input type="date" id="extendedDate" />
+  </div>
+  <div class="form-group">
+    <label for="allocatedSite">Allocated Site</label>
+    <input type="text" id="allocatedSite" />
+  </div>
+</div>
+
+<div style="text-align: center; margin-top: 20px">
             <button type="submit" class="btn btn-success">
               <i class="fas fa-save"></i> Save Tender
             </button>
@@ -765,6 +788,11 @@
             awardedDate: document.getElementById("awardedDate").value,
             dueDate: document.getElementById("dueDate").value,
             completed: 0,
+            poleType: document.getElementById("poleType").value,
+            deliveryLocation: document.getElementById("deliveryLocation").value,
+            extendedDate: document.getElementById("extendedDate").value,
+            allocatedSite: document.getElementById("allocatedSite").value,
+
           };
 
           if (editingTenderId) {
@@ -809,7 +837,6 @@
         const record = {
           id: Date.now().toString(),
           tenderId,
-
           location,
           polesCompleted,
           date,
@@ -1122,6 +1149,19 @@
 
         tableHTML += "</tbody></table>";
         document.getElementById("reportTable").innerHTML = tableHTML;
+
+        const unassigned = tenders.filter(t => !t.allocatedSite);
+        const lowest = [...tenders].sort((a, b) => a.quantity - b.quantity).slice(0, 5);
+
+        let extraInfo = `
+          <h3>Unassigned Awarded Tenders</h3>
+          <ul>${unassigned.map(t => `<li>${t.name} - ${t.number}</li>`).join('')}</ul>
+          <h3>Lowest Quantity Tenders</h3>
+          <ul>${lowest.map(t => `<li>${t.name} - Qty: ${t.quantity}</li>`).join('')}</ul>
+        `;
+
+        document.getElementById("reportTable").innerHTML += extraInfo;
+
       }
 
       function printReport() {
