@@ -441,7 +441,6 @@
                 <tr>
                   <th>Tender Name</th>
                   <th>Due Date</th>
-                  <th>Pole Type</th>
                   <th>Progress</th>
                   <th>Status</th>
                   <th>Penalty Risk</th>
@@ -493,7 +492,6 @@
                   <th>Quantity</th>
                   <th>Awarded Date</th>
                   <th>Due Date</th>
-                   <th>Pole Type</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -631,37 +629,7 @@
             </div>
           </div>
 
-          </div>
-            <div class="form-group">
-              <label for="poleType">Pole Type</label>
-              <input type="text" id="poleType" required />
-            </div>
-          </div>
-
-          
-<div class="form-row">
-  <div class="form-group">
-    <label for="poleType">Pole Type</label>
-    <input type="text" id="poleType" required />
-  </div>
-  <div class="form-group">
-    <label for="deliveryLocation">Location to be Delivered</label>
-    <input type="text" id="deliveryLocation" required />
-  </div>
-</div>
-
-<div class="form-row">
-  <div class="form-group">
-    <label for="extendedDate">Extended Submission Date</label>
-    <input type="date" id="extendedDate" />
-  </div>
-  <div class="form-group">
-    <label for="allocatedSite">Allocated Site</label>
-    <input type="text" id="allocatedSite" />
-  </div>
-</div>
-
-<div style="text-align: center; margin-top: 20px">
+          <div style="text-align: center; margin-top: 20px">
             <button type="submit" class="btn btn-success">
               <i class="fas fa-save"></i> Save Tender
             </button>
@@ -797,11 +765,6 @@
             awardedDate: document.getElementById("awardedDate").value,
             dueDate: document.getElementById("dueDate").value,
             completed: 0,
-            poleType: document.getElementById("poleType").value,
-            deliveryLocation: document.getElementById("deliveryLocation").value,
-            extendedDate: document.getElementById("extendedDate").value,
-            allocatedSite: document.getElementById("allocatedSite").value,
-
           };
 
           if (editingTenderId) {
@@ -846,6 +809,7 @@
         const record = {
           id: Date.now().toString(),
           tenderId,
+
           location,
           polesCompleted,
           date,
@@ -1119,7 +1083,6 @@
                         <tr style="background: #f8f9fa;">
                             <th style="border: 1px solid #ddd; padding: 10px;">Tender Name</th>
                             <th style="border: 1px solid #ddd; padding: 10px;">Due Date</th>
-                            <th style="border: 1px solid #ddd; padding: 10px;">Pole Type</th>
                             <th style="border: 1px solid #ddd; padding: 10px;">Progress</th>
                             <th style="border: 1px solid #ddd; padding: 10px;">Status</th>
                             <th style="border: 1px solid #ddd; padding: 10px;">Penalty</th>
@@ -1159,19 +1122,6 @@
 
         tableHTML += "</tbody></table>";
         document.getElementById("reportTable").innerHTML = tableHTML;
-
-        const unassigned = tenders.filter(t => !t.allocatedSite);
-        const lowest = [...tenders].sort((a, b) => a.quantity - b.quantity).slice(0, 5);
-
-        let extraInfo = `
-          <h3>Unassigned Awarded Tenders</h3>
-          <ul>${unassigned.map(t => `<li>${t.name} - ${t.number}</li>`).join('')}</ul>
-          <h3>Lowest Quantity Tenders</h3>
-          <ul>${lowest.map(t => `<li>${t.name} - Qty: ${t.quantity}</li>`).join('')}</ul>
-        `;
-
-        document.getElementById("reportTable").innerHTML += extraInfo;
-
       }
 
       function printReport() {
