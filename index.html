@@ -461,12 +461,13 @@
   <thead>
     <tr>
       <th>Tender No</th>
-      <th>Product</th>
+     <th>Product</th>
       <th>Site</th>
       <th>Due Date</th>
-      <th>Progress</th>
-      <th>Status</th>
       <th>Penalty Risk</th>
+      <th>Status</th>
+      <th>Progress</th>
+
     </tr>
   </thead>
 
@@ -495,7 +496,7 @@
                         <thead>
                             <tr>
                                 <th>Tender Name</th>
-                                <th>Site</th>
+                                <th>Tender No</th>
                                 <th>Product</th>
                                 <th>Quantity</th>
                                 <th>Awarded Date</th>
@@ -745,6 +746,7 @@
                 if (tender) {
                     document.getElementById('tenderName').value = tender.name;
                     document.getElementById('tenderNo').value = tender.number;
+                     document.getElementById('site').value = tender.site;
                     document.getElementById('tenderQty').value = tender.quantity;
                     document.getElementById('product').value = tender.product;
                     document.getElementById('awardedDate').value = tender.awardedDate;
@@ -762,6 +764,8 @@
             document.getElementById('tenderModal').style.display = 'none';
             editingTenderId = null;
         }
+        site: document.getElementById('site').value,
+
 
         // Form submission
 document.getElementById('tenderForm').addEventListener('submit', async function(e) {
@@ -771,6 +775,7 @@ document.getElementById('tenderForm').addEventListener('submit', async function(
         id: editingTenderId || Date.now().toString(),
         name: document.getElementById('tenderName').value,
         number: document.getElementById('tenderNo').value,
+        site: document.getElementById('site').value,
         quantity: parseInt(document.getElementById('tenderQty').value),
         product: document.getElementById('product').value,
         awardedDate: document.getElementById('awardedDate').value,
@@ -877,29 +882,32 @@ document.getElementById('tenderForm').addEventListener('submit', async function(
         }
 
         function updateDashboardTable() {
-            const tbody = document.getElementById('dashboardTableBody');
-            tbody.innerHTML = '';
+    const tbody = document.getElementById('dashboardTableBody');
+    tbody.innerHTML = '';
 
-            tenders.slice(0, 10).forEach(tender => {
-                const row = tbody.insertRow();
-                const status = getStatus(tender);
-                const progress = ((tender.completed || 0) / tender.quantity * 100).toFixed(1);
-                const penalty = calculatePenalty(tender);
+    tenders.slice(0, 10).forEach(tender => {
+        const row = tbody.insertRow();
+        const status = getStatus(tender);
+        const progress = ((tender.completed || 0) / tender.quantity * 100).toFixed(1);
+        const penalty = calculatePenalty(tender);
 
-                row.innerHTML = `
-                    <td>${tender.name}</td>
-                    <td>${formatDate(tender.dueDate)}</td>
-                    <td>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${progress}%"></div>
-                        </div>
-                        ${progress}% (${tender.completed || 0}/${tender.quantity})
-                    </td>
-                    <td><span class="status-badge status-${status.toLowerCase().replace(' ', '-')}">${status}</span></td>
-                    <td>${penalty > 0 ? `₹${penalty.toLocaleString()}` : 'No Risk'}</td>
-                `;
-            });
-        }
+        row.innerHTML = `
+            <td>${tender.number}</td>
+            <td>${tender.product || '—'}</td>
+            <td>${tender.site || '—'}</td>
+            <td>${formatDate(tender.dueDate)}</td>
+            <td>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progress}%"></div>
+                </div>
+                ${progress}% (${tender.completed || 0}/${tender.quantity})
+            </td>
+            <td><span class="status-badge status-${status.toLowerCase().replace(' ', '-')}">${status}</span></td>
+            <td>${penalty > 0 ? `₹${penalty.toLocaleString()}` : 'No Risk'}</td>
+        `;
+    });
+}
+
 
         function updateTendersTable() {
             const tbody = document.getElementById('tendersTableBody');
@@ -1169,7 +1177,7 @@ Penalty: ${penalty > 0 ? `₹${penalty.toLocaleString()}` : 'No Penalty'}
 
         // Data persistence (using browser storage)
         // Google Apps Script Web App URL - Replace with your actual URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz79vHpKB-MwWBKPl7tw_YFVVsdG8HdeAsDe580Bx3LRW4pv1E_ORCigzU97smOqxH64g/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKOkSjxOR92904lhbBDF748GDYk4W9U4i9Qq4OnZPCLacdQvk5eOxvQbDnAaDUdFUM/exec';
 
 
 // Data persistence (using Google Sheets)
