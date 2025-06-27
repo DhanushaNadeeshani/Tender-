@@ -1177,23 +1177,21 @@ Penalty: ${penalty > 0 ? `₹${penalty.toLocaleString()}` : 'No Penalty'}
 
         // Data persistence (using browser storage)
         // Google Apps Script Web App URL - Replace with your actual URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKOkSjxOR92904lhbBDF748GDYk4W9U4i9Qq4OnZPCLacdQvk5eOxvQbDnAaDUdFUM/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz79vHpKB-MwWBKPl7tw_YFVVsdG8HdeAsDe580Bx3LRW4pv1E_ORCigzU97smOqxH64g/exec';
 
 
 // Data persistence (using Google Sheets)
 async function saveData() {
     try {
-        const response = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                action: 'save',
-                tenders: tenders,
-                manufacturingRecords: manufacturingRecords
-            })
-        });
+       const response = await fetch(SCRIPT_URL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    tenders: tenders,
+    manufacturingRecords: manufacturingRecords
+  })
+});
+
         
         if (!response.ok) throw new Error('Save failed');
         console.log('Data saved successfully');
